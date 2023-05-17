@@ -53,29 +53,57 @@ function updateGoodsList() {
     goods.forEach((good, i) => {
       tbody.insertAdjacentHTML(
         'beforeend',
-        `
-<tr class='align-middle'>
-<td>${i + 1}</td>
-<td>${good.name}</td>
-<td>${good.price}</td>
-<td>${good.count}</td>
-<td>
-<button class='good_delete btn-danger' data-delete='${
-          good.id
-        }'>&#10006;</button>
-</td>
-<td>
-<button class="good_delete btn-danger" data-goods='${good.id}'>&#10149;</button>
-</td>
-</tr>
-        `
+        `<tr class='align-middle'>
+    <td>${i + 1}</td>
+    <td class='name'>${good.name}</td>
+    <td class='price'>${good.price}</td>
+    <td>${good.count}</td>
+    <td>
+    <button class='good_delete btn btn-danger' data-delete='${
+      good.id
+    }'>&#10006;</button>
+    </td>
+    <td>
+    <button class="good_delete btn btn-primary" data-goods='${
+      good.id
+    }'>&#10149;</button>
+    </td>
+    </tr>
+            `
       )
       if (good.count > 0) {
         good.priceWithDiscount =
           good.count * good.price -
           good.count * good.price * good.discount * 0.01
         resultPrice += good.priceWithDiscount
+
+        const cart = document.querySelector('.cart')
+        cart.insertAdjacentHTML(
+          'beforeend',
+          `<tr class='align-middle'>
+    <td>${i + 1}</td>
+    <td class='price_name'>${good.name}</td>
+    <td class='price_one'>${good.price}</td>
+    <td class='price_count'>${good.count}</td>
+    <td class='price_discount'><input data-goodid='${
+      good.id
+    }' type='text' value='${good.discount}' min='0' max='100'/></td>
+    <td>${good.priceWithDiscount}</td>
+    <td>
+    <button class='good_delete btn btn-danger' data-delete='${
+      good.id
+    }'>&#10006;</button>
+    </td>
+
+    </tr>`
+        )
       }
     })
+
+    // userList = new FileList('goods', 'options')
+  } else {
+    table1.hidden = true
+    table2.hidden = true
   }
+  document.querySelector('.price_result').innerHTML = resultPrice + ' &#8381;'
 }

@@ -51,6 +51,7 @@ button.good_delete {
   justify-content: center;
   align-items: center;
   margin-top: 15px;
+  margin-bottom: 15px;
 }
 
 .price_title,
@@ -80,4 +81,8 @@ td {
   display: flex;
   align-items: center;
   height: 60px;
+}
+
+.table-responsive {
+  padding: 0 15px;
 }
