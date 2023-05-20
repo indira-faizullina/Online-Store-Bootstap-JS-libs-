@@ -8,6 +8,11 @@ const BSModal = new bootstrap.Modal(document.getElementById('exampleModal'), {
   keyboard: false,
 })
 
+let options = {
+  valueNames: ['name', 'price'],
+}
+let userList
+
 let resultPrice = 0
 
 addGoodButton.addEventListener('click', addGoodToList)
@@ -23,7 +28,7 @@ function addGoodToList() {
     count.value = ''
     const goods = JSON.parse(localStorage.getItem('goods'))
     goods.push({
-      id: Date.now(),
+      id: Date.now().toString(),
       name,
       price,
       count,
@@ -100,10 +105,34 @@ function updateGoodsList() {
       }
     })
 
-    // userList = new FileList('goods', 'options')
+    userList = new List('goods', options)
   } else {
     table1.hidden = true
     table2.hidden = true
   }
   document.querySelector('.price_result').innerHTML = resultPrice + ' &#8381;'
 }
+
+document.querySelector('.list').addEventListener('click', function (event) {
+  if (event.target.dataset.delete) {
+    Swal.fire({
+      text: 'Удалить товар?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Удалить',
+      cancelButtonText: 'Отмена',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const goods = JSON.parse(localStorage.getItem('goods'))
+        const updateGoods = goods.filter(
+          (good) => event.target.dataset.delete !== good.id
+        )
+        localStorage.setItem('goods', JSON.stringify(updateGoods))
+        updateGoodsList()
+        Swal.fire('Товар удален!', 'success')
+      }
+    })
+  }
+})
